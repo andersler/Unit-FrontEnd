@@ -3,14 +3,16 @@ import { v4 as uuidv4 } from 'uuid'
 import { toPrettyDate } from '../Utils/DateUtils'
 import { Unit } from '../Types/Unit'
 import { getUnits, deleteUnit } from '../API/UnitController'
-import { createPortal } from 'react-dom';
+import { createPortal } from 'react-dom'
 import EditUnitModal from './EditUnitModal'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Units = () => {
-    const logo: string = require("../Assets/threedots.svg").default;
+    const logo: string = require('../Assets/threedots.svg').default
     const [units, setUnits] = useState<Unit[]>([])
-    const [activeUnitId, setActiveUnitId] = useState<string>(""); 
-    
+    const [activeUnitId, setActiveUnitId] = useState<string>('')
+    const deleteNotify = () => toast('Enhet slettet!')
+
     useEffect(() => {
         getUnits().then((data) => {
             setUnits(data)
@@ -23,15 +25,14 @@ const Units = () => {
         })
     }
 
-    const handleOpenModal = (id : string) => {
-        setActiveUnitId(id); 
-    };
+    const handleOpenModal = (id: string) => {
+        setActiveUnitId(id)
+    }
 
     const handleCloseModal = () => {
-        setActiveUnitId(""); 
+        setActiveUnitId('')
+    }
 
-  };
-       
     if (units.length === 0)
         return (
             <>
@@ -65,7 +66,8 @@ const Units = () => {
                     {units.map((unit) => (
                         <tr
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                            key={uuidv4()}>
+                            key={uuidv4()}
+                        >
                             <td className="px-6 py-4">{unit.name}</td>
                             <td className="px-6 py-4">
                                 {unit.isActive ? 'Active' : 'Inactive'}
@@ -80,28 +82,37 @@ const Units = () => {
                             <td className="px-6 py-4">
                                 <button
                                     className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                    onClick={() => handleDelete(unit.id)}>
+                                    onClick={() => {
+                                        handleDelete(unit.id)
+                                        deleteNotify()
+                                    }}
+                                >
                                     Delete
                                 </button>
                             </td>
 
                             <td className="px-6 py-4">
-                                <button onClick={() => handleOpenModal(unit.id)}>
+                                <button
+                                    onClick={() => handleOpenModal(unit.id)}
+                                >
                                     <img src={logo} alt="logo" />
                                 </button>
+
                                 {activeUnitId === unit.id &&
-                            createPortal(
-                                <EditUnitModal
-                                    setter={setUnits}
-                                    unit={unit} 
-                                    onClose={handleCloseModal}/>,
-                                document.body
-                            )}
+                                    createPortal(
+                                        <EditUnitModal
+                                            setter={setUnits}
+                                            unit={unit}
+                                            onClose={handleCloseModal}
+                                        />,
+                                        document.body
+                                    )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <ToastContainer />
         </div>
     )
 }

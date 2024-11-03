@@ -1,87 +1,98 @@
 import { Unit } from '../Types/Unit'
-import { updateUnit } from '../API/UnitController';
+import { updateUnit } from '../API/UnitController'
 import React, { useState } from 'react'
 import { EditUnitModalProps } from '../Types/EditModalProps'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 
-export default function EditUnitModal({setter,unit, onClose }: EditUnitModalProps) {
-    const [name, setName] = useState<string>(unit.name);
-    const [type, setType] = useState<string>(unit.type);
-    const [isActive, setIsActive] = useState<boolean>(unit.isActive);
-    const logo: string = require("../Assets/close.svg").default;
-
+export default function EditUnitModal({
+    setter,
+    unit,
+    onClose,
+}: EditUnitModalProps) {
+    const [name, setName] = useState<string>(unit.name)
+    const [type, setType] = useState<string>(unit.type)
+    const [isActive, setIsActive] = useState<boolean>(unit.isActive)
+    const logo: string = require('../Assets/close.svg').default
 
     const handleUpdate = async (unit: Unit): Promise<void> => {
         updateUnit(unit).then((success) => {
             if (success) {
-                toast.success('Unit updated successfully');
-                return unit;
-            } else {
-                toast.error('Failed to update unit');
+                return unit
             }
-        });
-    };
-    
+        })
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const updatedUnit: Unit = { ...unit, name, type, isActive };
-        handleUpdate(updatedUnit);
-        setter((prev) => prev.map((u) => (u.id === unit.id ? updatedUnit : u)));
-        toast.success('Unit updated successfully');
-        onClose();
-      };
-  
+        e.preventDefault()
+        const updatedUnit: Unit = { ...unit, name, type, isActive }
+        handleUpdate(updatedUnit)
+        setter((prev) => prev.map((u) => (u.id === unit.id ? updatedUnit : u)))
+        toast.success('Unit updated successfully')
+        onClose()
+    }
+
     return (
         <div className="relative overflow-x-auto">
             <ToastContainer />
-        <form onSubmit={handleSubmit}>
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <tbody>
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4" style={{ width: "17.5%" }}>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Name"
-                                className="w-full"
-                            />
-                        </td>
-                        <td className="px-6 py-4" style={{ width: "12.1%" }}>
-                            <input
-                            type="checkbox"
-                            checked={isActive}
-                            onChange={(e) => setIsActive(e.target.checked)}
-                            />
-                        </td>
-
-                        <td className="px-7 py-4" style={{ width: "32%" }}>
-                            <input
-                                type="text"
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
-                                placeholder="Type"  
-                            />
-                        </td>
-                        <td className="px-6 py-4" ></td>
-                        
-                        <td className="px-6 py-4">
-                            <button
-                                className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-                                type="submit"
+            <form onSubmit={handleSubmit}>
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td
+                                className="px-6 py-4"
+                                style={{ width: '17.5%' }}
                             >
-                                Save
-                            </button>
-                        </td>
-                        <td className="px-5 py-3">
-                            <button 
-                                onClick={onClose} 
-                                className="text-gray-700 dark:text-gray-300 hover:underline">
-                                   <img src={logo} alt="logo" />
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>);}
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Name"
+                                    className="w-full"
+                                />
+                            </td>
+                            <td
+                                className="px-6 py-4"
+                                style={{ width: '12.5%' }}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={isActive}
+                                    onChange={(e) =>
+                                        setIsActive(e.target.checked)
+                                    }
+                                />
+                            </td>
+
+                            <td className="px-6 py-4">
+                                <input
+                                    type="text"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                    placeholder="Type"
+                                />
+                            </td>
+                            <td className="px-6 py-4"></td>
+
+                            <td className="px-6 py-4" style={{ width: '20%' }}>
+                                <button
+                                    className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+                                    type="submit"
+                                >
+                                    Save
+                                </button>
+                            </td>
+                            <td className="px-6 py-4">
+                                <button
+                                    onClick={onClose}
+                                    className="text-gray-700 dark:text-gray-300 hover:underline"
+                                >
+                                    <img src={logo} alt="logo" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    )
+}

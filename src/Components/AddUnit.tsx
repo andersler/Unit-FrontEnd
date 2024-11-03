@@ -1,13 +1,14 @@
 import { FormEvent, useState } from 'react'
 import { RequestUnit } from '../Types/Unit'
 import { addUnit } from '../API/UnitController'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddUnit = () => {
     const [name, setName] = useState<string>('')
     const [isActiveString, setIsActiveString] = useState<string>('Active')
     const [type, setType] = useState<string>('')
-    const notify = () => toast("Wow so easy!");
+    const notify = () => toast('Ny enhet opprettet!')
 
     const handleSubmit = async (
         event: FormEvent<HTMLFormElement>
@@ -15,15 +16,16 @@ const AddUnit = () => {
         event.preventDefault()
         const isActive = isActiveString === 'Active' ? true : false
         const unit: RequestUnit = { name: name, isActive: isActive, type: type }
-        console.log(unit)
-        addUnit(unit).then((success) => {
-            if (success) {
-                console.log('Unit added successfully')
-            } else {
-                alert('Error adding unit')
-            }
-        })
 
+        if (unit.name && unit.type) {
+            addUnit(unit).then((success) => {
+                if (success) {
+                    console.log('Unit added successfully')
+                } else {
+                    alert('Error adding unit')
+                }
+            })
+        }
         setTimeout(() => {
             resetForm()
         }, 1500)
@@ -31,7 +33,7 @@ const AddUnit = () => {
 
     const resetForm = () => {
         setName('')
-        setIsActiveString('')
+        setIsActiveString('Active')
         setType('')
     }
 
@@ -41,7 +43,8 @@ const AddUnit = () => {
                 <div className="mb-3 px-4">
                     <label
                         htmlFor="id"
-                        className="block text-gray-700 text-sm font-bold mb-2">
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                    >
                         Unit Name:
                     </label>
                     <input
@@ -90,7 +93,10 @@ const AddUnit = () => {
                 </div>
 
                 <div className="mb-3 px-4">
-                    <button onClick={notify} className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">
+                    <button
+                        onClick={notify}
+                        className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                    >
                         Save Unit
                     </button>
                     <ToastContainer />

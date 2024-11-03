@@ -34,7 +34,6 @@ export const deleteUnit = async (id: string): Promise<boolean> => {
         const responseData = await response.json()
         console.log(responseData.message)
         return true
-        
     } catch (error) {
         console.error('Error deleting unit:', error)
         return false
@@ -55,7 +54,6 @@ export const addUnit = async (unit: RequestUnit): Promise<boolean> => {
         const responseData = await response.json()
         console.log(responseData.message)
         return true
-
     } catch (error) {
         console.error('Error adding unit:', error)
         return false
@@ -78,6 +76,6 @@ export const updateUnit = async (unit: Unit): Promise<Unit | null> => {
         return unit
     } catch (error) {
         console.error('Error updating unit:', error)
-        return null;
+        return null
     }
 }
