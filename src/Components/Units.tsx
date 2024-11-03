@@ -9,6 +9,9 @@ import { ToastContainer, toast } from 'react-toastify'
 
 const Units = () => {
     const logo: string = require('../Assets/threedots.svg').default
+    const checkLogo: string = require('../Assets/active.svg').default
+    const crossLogo: string = require('../Assets/inactive.svg').default
+
     const [units, setUnits] = useState<Unit[]>([])
     const [activeUnitId, setActiveUnitId] = useState<string>('')
     const deleteNotify = () => toast('Enhet slettet!')
@@ -70,7 +73,11 @@ const Units = () => {
                         >
                             <td className="px-6 py-4">{unit.name}</td>
                             <td className="px-6 py-4">
-                                {unit.isActive ? 'Active' : 'Inactive'}
+                                {unit.isActive ? (
+                                    <img src={checkLogo} alt="logo" />
+                                ) : (
+                                    <img src={crossLogo} alt="logo" />
+                                )}
                             </td>
                             <td className="px-6 py-4">
                                 {unit.type || 'No Type'}
@@ -111,8 +118,8 @@ const Units = () => {
                         </tr>
                     ))}
                 </tbody>
+                <ToastContainer />
             </table>
-            <ToastContainer />
         </div>
     )
 }
