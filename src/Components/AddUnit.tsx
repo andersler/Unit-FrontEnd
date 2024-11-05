@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react'
 import { RequestUnit } from '../Types/Unit'
 import { addUnit } from '../API/UnitController'
+import { isValid } from '../Utils/InputValidation'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -9,6 +10,7 @@ const AddUnit = () => {
     const [isActiveString, setIsActiveString] = useState<string>('Active')
     const [type, setType] = useState<string>('')
     const notify = () => toast('Ny enhet opprettet!')
+    const notifyError = () => toast('Feil ved oppretting av enhet!')
 
     const handleSubmit = async (
         event: FormEvent<HTMLFormElement>
@@ -17,7 +19,7 @@ const AddUnit = () => {
         const isActive = isActiveString === 'Active' ? true : false
         const unit: RequestUnit = { name: name, isActive: isActive, type: type }
 
-        if (unit.name && unit.type) {
+        if (isValid(unit.name) && isValid(unit.type)) {
             addUnit(unit).then((success) => {
                 if (success) {
                     console.log('Unit added successfully')
@@ -25,6 +27,10 @@ const AddUnit = () => {
                     alert('Error adding unit')
                 }
             })
+            notify()
+        } else {
+            console.log('Invalid input')
+            notifyError()
         }
         setTimeout(() => {
             resetForm()
@@ -93,10 +99,7 @@ const AddUnit = () => {
                 </div>
 
                 <div className="mb-3 px-4">
-                    <button
-                        onClick={notify}
-                        className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
+                    <button className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">
                         Save Unit
                     </button>
                     <ToastContainer />
