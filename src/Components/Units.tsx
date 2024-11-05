@@ -6,6 +6,7 @@ import { getUnits, deleteUnit } from '../API/UnitController'
 import { createPortal } from 'react-dom'
 import EditUnitModal from './EditUnitModal'
 import { ToastContainer, toast } from 'react-toastify'
+import { Tooltip } from '@mui/material'
 
 const Units = () => {
     const logo: string = require('../Assets/threedots.svg').default
@@ -29,6 +30,7 @@ const Units = () => {
     }
 
     const handleOpenModal = (id: string) => {
+        console.log('Unit updated i Units')
         setActiveUnitId(id)
     }
 
@@ -99,12 +101,13 @@ const Units = () => {
                             </td>
 
                             <td className="px-6 py-4">
-                                <button
-                                    onClick={() => handleOpenModal(unit.id)}
-                                >
-                                    <img src={logo} alt="logo" />
-                                </button>
-
+                                <Tooltip title="Edit">
+                                    <button
+                                        onClick={() => handleOpenModal(unit.id)}
+                                    >
+                                        <img src={logo} alt="logo" />
+                                    </button>
+                                </Tooltip>
                                 {activeUnitId === unit.id &&
                                     createPortal(
                                         <EditUnitModal

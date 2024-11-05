@@ -2,7 +2,6 @@ import { Unit } from '../Types/Unit'
 import { updateUnit } from '../API/UnitController'
 import React, { useState } from 'react'
 import { EditUnitModalProps } from '../Types/EditModalProps'
-import { ToastContainer, toast } from 'react-toastify'
 
 export default function EditUnitModal({
     setter,
@@ -12,6 +11,7 @@ export default function EditUnitModal({
     const [name, setName] = useState<string>(unit.name)
     const [type, setType] = useState<string>(unit.type)
     const [isActive, setIsActive] = useState<boolean>(unit.isActive)
+
     const logo: string = require('../Assets/close.svg').default
 
     const handleUpdate = async (unit: Unit): Promise<void> => {
@@ -27,21 +27,16 @@ export default function EditUnitModal({
         const updatedUnit: Unit = { ...unit, name, type, isActive }
         handleUpdate(updatedUnit)
         setter((prev) => prev.map((u) => (u.id === unit.id ? updatedUnit : u)))
-        toast.success('Unit updated successfully')
         onClose()
     }
 
     return (
         <div className="relative overflow-x-auto">
-            <ToastContainer />
             <form onSubmit={handleSubmit}>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <tbody>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td
-                                className="px-6 py-4"
-                                style={{ width: '17.5%' }}
-                            >
+                            <td className="px-6 py-4" style={{ width: '17%' }}>
                                 <input
                                     type="text"
                                     value={name}
@@ -52,7 +47,7 @@ export default function EditUnitModal({
                             </td>
                             <td
                                 className="px-6 py-4"
-                                style={{ width: '12.5%' }}
+                                style={{ width: '12.8%' }}
                             >
                                 <input
                                     type="checkbox"
@@ -73,7 +68,10 @@ export default function EditUnitModal({
                             </td>
                             <td className="px-6 py-4"></td>
 
-                            <td className="px-6 py-4" style={{ width: '20%' }}>
+                            <td
+                                className="px-6 py-4"
+                                style={{ width: '20.1%' }}
+                            >
                                 <button
                                     className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
                                     type="submit"
